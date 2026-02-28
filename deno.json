@@ -1,4 +1,5 @@
 {
+  "nodeModulesDir": "auto",
   "tasks": {
     "start": "deno run --allow-env --allow-read --allow-net src/test/coindpay.spec.ts",
     "test": "DENO_TLS_CA_STORE=system deno test -A"
