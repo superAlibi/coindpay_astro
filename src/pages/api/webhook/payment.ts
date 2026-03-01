@@ -55,7 +55,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const kv = await getKv();
-    const key = ["payment_webhook", data.id, new Date().toISOString()];
+    const key = ["payment_order", data.id];
     await kv.set(key, { ...data, receivedAt: new Date().toISOString() });
   } catch (e) {
     console.error("Failed to persist payment webhook to KV:", e);
