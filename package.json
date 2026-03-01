@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@deno/astro-adapter": "^0.3.0",
+    "@deno/kv": "^0.13.0",
     "@std/assert": "npm:@jsr/std__assert@^1.0.19",
     "@std/dotenv": "npm:@jsr/std__dotenv@^0.225.6",
     "@tailwindcss/vite": "^4.2.1",

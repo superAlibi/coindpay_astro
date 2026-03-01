@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { createHmacSignature } from "../../../server/apis";
+import { getKv } from "../../../server/kv";
 
 const API_SECRET_ENV = "COINDPAY_API_SECRET";
 
@@ -51,6 +52,14 @@ export const POST: APIRoute = async ({ request }) => {
     `CoindPay payment ${data.id}-${data.rampStatus ?? "?"} callback:`,
     data
   );
+
+  try {
+    const kv = await getKv();
+    const key = ["payment_webhook", data.id, new Date().toISOString()];
+    await kv.set(key, { ...data, receivedAt: new Date().toISOString() });
+  } catch (e) {
+    console.error("Failed to persist payment webhook to KV:", e);
+  }
 
   return jsonResponse({ ok: true, message: "OK" }, 200);
 };

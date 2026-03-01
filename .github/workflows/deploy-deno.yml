@@ -20,5 +20,5 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: coindpay-astro # TODO：替换为 Deno Deploy 项目名称
-          entrypoint: jsr:@std/http/file-server
+          entrypoint: server/entry.mjs
           root: dist
