@@ -227,7 +227,7 @@ export interface CoindPayUrlParams {
 }
 
 /** 当 price 存在时，signature 和 merchant_transaction_id 必填 */
-const CoindPayUrlParamsSchema = z
+export const CoindPayUrlParamsSchema = z
   .object({
     merchant_transaction_id: z.string(),
     signature: z.string().optional(),
