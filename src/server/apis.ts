@@ -1,5 +1,6 @@
 import ky from 'ky'
 import { createHmac } from 'node:crypto'
+import { z } from 'zod/v4'
 
 export const APIS = {
   /**
@@ -193,7 +194,7 @@ export interface CoindPayUrlParams {
   desc?: string;
 
   /** 支付金额（字符串形式，如 "19.99"） */
-  price?: string|number;
+  price?: string | number;
 
   /** 货币代码，如 "USD" / "EUR" */
   currency?: string;
@@ -220,12 +221,41 @@ export interface CoindPayUrlParams {
   redirect_url?: string;
 }
 
-const merchant_transaction_id = crypto.randomUUID()
+/** 当 price 存在时，signature 和 merchant_transaction_id 必填 */
+const CoindPayUrlParamsSchema = z
+  .object({
+    merchant_transaction_id: z.string(),
+    signature: z.string().optional(),
+    title: z.string().optional(),
+    desc: z.string().optional(),
+    price: z.number().optional(),
+    currency: z.string().optional(),
+    images: z.array(z.object({ url: z.string() })).optional(),
+    name: z.string().optional(),
+    email: z.string().optional(),
+    payment_method: z.string().optional(),
+    fix_payment_method: z.boolean().optional(),
+    embed_widget: z.boolean().optional(),
+    redirect_url: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      const hasPrice = data.price !== undefined && data.price !== null && data.price > 0;
+      if (!hasPrice) return true;
+      return (
+        typeof data.signature === 'string' &&
+        data.signature.length > 0 &&
+        typeof data.merchant_transaction_id === 'string' &&
+        data.merchant_transaction_id.length > 0
+      );
+    },
+    { message: '当 price 存在时，signature 和 merchant_transaction_id 为必填参数' }
+  );
 
-export interface PaymentsLinkSigPayload {
-  merchant_transaction_id: string
-  price: string|number
-}
+export type CoindPayUrlParamsValidated = z.infer<typeof CoindPayUrlParamsSchema>;
+
+
+export type PaymentsLinkSigPayload = Pick<z.infer<typeof CoindPayUrlParamsSchema>, 'merchant_transaction_id' | 'price'>
 
 export function createHmacSignature(secret: string, bodyString: string): string {
   return createHmac('sha256', secret).update(bodyString).digest('hex')
@@ -242,43 +272,34 @@ export function signPaymentsLinkSig(payload: PaymentsLinkSigPayload, secretKey: 
   return createHmacSignature(secretKey, canonical)
 }
 
-// Render to your dynamic product link params
-const paramsData: CoindPayUrlParams = {
-  merchant_transaction_id,  // 'xxx-123456',
-  title: 'Pro Subscription',
-  desc: 'Monthly access to all features',
-  price: '19.99',
-  signature: 'xxx', // signPaymentsLinkSig('your price payload')
-  email: 'your_customers@domain.com',
-  // Support one or multiple cover images
-  images: [
-    { url: 'https://cdn.coindpay.xyz/stream/static/home/content/partners_bg_01.jpg' },
-    { url: 'https://picsum.photos/600/400' }
-  ],
-  embed_widget: true,
-}
-
 
 /**
- * 传入支付链接和查询参数，返回拼接后的支付链接
- * @param link 
- * @param queryData 
- * @returns 
+ * 传入支付链接和查询参数，返回拼接后的支付链接。
+ * 当 queryData 中含有 price 时，必须同时提供 signature 和 merchant_transaction_id，否则抛出 ZodError。
+ * @param link
+ * @param queryData
+ * @returns 拼接后的完整支付链接 URL
  */
-export function getEncodePayLink(
+export async function getEncodePayLink(
   link: string,
   queryData?: CoindPayUrlParams
-): string {
-  const url = new URL(link)
+): Promise<string> {
+  const { success, data: validated, error } = await CoindPayUrlParamsSchema.safeParseAsync(queryData)
+  if (!success) {
+    const erorMessage = error.issues.map((issue) => issue.message).join(',');
+    console.error(erorMessage);
+    throw new Error(erorMessage);
+  }
+  const url = new URL(link);
 
-  Object.entries(queryData || {}).forEach(([key, value]) => {
-    if (value === undefined || value === null) return
+  Object.entries(validated).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
     url.searchParams.set(
       key,
       typeof value === 'object' ? JSON.stringify(value) : String(value)
-    )
-  })
+    );
+  });
 
-  return url.toString()
+  return url.toString();
 }
 
