@@ -1,5 +1,6 @@
 import ky from 'ky'
 import { createHmac } from 'node:crypto'
+import process from 'node:process'
 import { z } from 'zod/v4'
 
 export const APIS = {
@@ -15,8 +16,12 @@ export const APIS = {
 }
 
 
+function getApiBaseUrl(): string | undefined {
+  return process.env.COINDPAY_API_BASE_URL
+}
+
 export const kyClient = ky.create({
-  prefixUrl: Deno.env.get('COINDPAY_API_BASE_URL'),
+  prefixUrl: getApiBaseUrl(),
 })
 
 export interface STDResponse<T> {

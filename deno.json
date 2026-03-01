@@ -1,9 +1,0 @@
-{
-  "nodeModulesDir": "auto",
-  "tasks": {
-    "start": "deno run --allow-env --allow-read --allow-net src/test/coindpay.spec.ts"
-  },
-  "test": {
-    "include": ["src/test/**/*.spec.ts"]
-  }
-}

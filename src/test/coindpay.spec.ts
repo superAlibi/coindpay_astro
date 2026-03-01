@@ -1,28 +1,32 @@
-import "@std/dotenv/load";
-import { assertExists, assertEquals, assert } from "@std/assert";
-import { getPaymentInfo, getEncodePayLink, signPaymentsLinkSig } from "../server/apis.ts";
-import { HTTPError } from "ky";
-import type { STDResponse, PaymentInfo } from "../server/apis.ts";
+import { describe, it, expect } from 'vitest';
+import { getPaymentInfo, getEncodePayLink, signPaymentsLinkSig } from '../server/apis.ts';
+import { HTTPError } from 'ky';
+import type { STDResponse, PaymentInfo } from '../server/apis.ts';
 
-// const paymentLink = 'https://coindpay.xyz/pay/link/wWN8qCUfS3KiDLNTWEmrA'
-const paymentLink = 'https://coindpay.xyz/pay/link/x_25lmobuZhWcSz7uw4Bm'
-Deno.test("test coindpay api", async (ctx) => {
-  await ctx.step('get env COINDPAY_API_BASE_URL', async () => {
-    const COINDPAY_API_BASE_URL = Deno.env.get("COINDPAY_API_BASE_URL");
-    assertExists(COINDPAY_API_BASE_URL, 'COINDPAY_API_BASE_URL is not set');
-    console.log(COINDPAY_API_BASE_URL);
-  });
-  await ctx.step('get api key', async () => {
-    const apiKey = Deno.env.get("COINDPAY_API_SECRET");
-    assertExists(apiKey, 'COINDPAY_API_SECRET is not set');
+const paymentLink = 'https://coindpay.xyz/pay/link/x_25lmobuZhWcSz7uw4Bm';
+
+describe('coindpay api', () => {
+  it('get env COINDPAY_API_BASE_URL', () => {
+    const COINDPAY_API_BASE_URL = process.env.COINDPAY_API_BASE_URL;
+    expect(COINDPAY_API_BASE_URL).toBeDefined();
+    expect(COINDPAY_API_BASE_URL).toBeTruthy();
   });
 
-  await ctx.step('gen payment link', async () => {
+  it('get api key', () => {
+    const apiKey = process.env.COINDPAY_API_SECRET;
+    expect(apiKey).toBeDefined();
+    expect(apiKey).toBeTruthy();
+  });
+
+  it('gen payment link', async () => {
     const signaturePayload = {
       merchant_transaction_id: crypto.randomUUID(),
-      price: 60.00,
-    }
-    const signature = signPaymentsLinkSig(signaturePayload, Deno.env.get("COINDPAY_API_SECRET"));
+      price: 60.0,
+    };
+    const signature = signPaymentsLinkSig(
+      signaturePayload,
+      process.env.COINDPAY_API_SECRET!
+    );
     const response = await getEncodePayLink(paymentLink, {
       title: '嘻嘻不嘻嘻',
       desc: '不嘻嘻',
@@ -31,16 +35,25 @@ Deno.test("test coindpay api", async (ctx) => {
       signature,
       ...signaturePayload,
     });
-    // 用 std assert 判断结果为有效 URL
-    const isValidUrl = (s: string) => { try { new URL(s); return true; } catch { return false; } };
-    assert(isValidUrl(response), `Expected valid URL, got: ${response}`);
+    const isValidUrl = (s: string) => {
+      try {
+        new URL(s);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    expect(isValidUrl(response)).toBe(true);
   });
 
-  await ctx.step('gen payment link without price', async () => {
+  it('gen payment link without price', async () => {
     const signaturePayload = {
       merchant_transaction_id: crypto.randomUUID(),
-    }
-    const signature = signPaymentsLinkSig(signaturePayload, Deno.env.get("COINDPAY_API_SECRET"));
+    };
+    const signature = signPaymentsLinkSig(
+      signaturePayload,
+      process.env.COINDPAY_API_SECRET!
+    );
     const response = await getEncodePayLink(paymentLink, {
       title: '嘻嘻不嘻嘻',
       desc: '不嘻嘻',
@@ -49,60 +62,74 @@ Deno.test("test coindpay api", async (ctx) => {
       signature,
       ...signaturePayload,
     });
-    // 用 std assert 判断结果为有效 URL
-    const isValidUrl = (s: string) => { try { new URL(s); return true; } catch { return false; } };
-    assert(isValidUrl(response), `Expected valid URL, got: ${response}`);
+    const isValidUrl = (s: string) => {
+      try {
+        new URL(s);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    expect(isValidUrl(response)).toBe(true);
   });
-  await ctx.step('gen payment link without price and no signature', async () => {
+
+  it('gen payment link without price and no signature', async () => {
     const signaturePayload = {
       merchant_transaction_id: crypto.randomUUID(),
-    }
-    // const signature = signPaymentsLinkSig(signaturePayload, Deno.env.get("COINDPAY_API_SECRET"));
+    };
     const response = await getEncodePayLink(paymentLink, {
       title: '嘻嘻不嘻嘻',
       desc: '不嘻嘻',
       name: '布鲁斯',
       email: 'bruce@gmail.com',
-      // signature,
       ...signaturePayload,
     });
-    // 用 std assert 判断结果为有效 URL
-    const isValidUrl = (s: string) => { try { new URL(s); return true; } catch { return false; } };
-    assert(isValidUrl(response), `Expected valid URL, got: ${response}`);
+    const isValidUrl = (s: string) => {
+      try {
+        new URL(s);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    expect(isValidUrl(response)).toBe(true);
   });
-  await ctx.step('gen payment link with price but without signature', async () => {
+
+  it('gen payment link with price but without signature', async () => {
     const signaturePayload = {
       merchant_transaction_id: crypto.randomUUID(),
-      price: 60.00,
-    }
-    // const signature = signPaymentsLinkSig(signaturePayload, Deno.env.get("COINDPAY_API_SECRET"));
-    await getEncodePayLink(paymentLink, {
-      title: '嘻嘻不嘻嘻',
-      desc: '不嘻嘻',
-      name: '布鲁斯',
-      email: 'bruce@gmail.com',
-      // signature,
-      ...signaturePayload,
-    }).catch((error) => {
-      assertEquals(error.message, '当 price 存在时，signature 和 merchant_transaction_id 为必填参数');
-    }).then(() => {
-      throw new Error('Expected error');
-    });
-    // 用 std assert 判断结果为有效 URL
+      price: 60.0,
+    };
+    await expect(
+      getEncodePayLink(paymentLink, {
+        title: '嘻嘻不嘻嘻',
+        desc: '不嘻嘻',
+        name: '布鲁斯',
+        email: 'bruce@gmail.com',
+        ...signaturePayload,
+      })
+    ).rejects.toThrow(
+      '当 price 存在时，signature 和 merchant_transaction_id 为必填参数'
+    );
   });
-  await ctx.step('get api response', async () => {
+
+  it('get api response', async () => {
     const response = await getPaymentInfo('wWN8qCUfS3KiDLNTWEmrA');
-    assertExists(response.data, 'response.data is not set');
-    assertEquals(response.data.id, 'wWN8qCUfS3KiDLNTWEmrA', 'response.data.id is not wWN8qCUfS3KiDLNTWEmrA');
-    assertEquals(response.ok, true, 'response.ok is not true');
+    expect(response.data).toBeDefined();
+    expect(response.data!.id).toBe('wWN8qCUfS3KiDLNTWEmrA');
+    expect(response.ok).toBe(true);
   });
-  // 测试一个错误的请求id, 应该返回错误信息
-  await ctx.step('get api response with invalid id', async () => {
-    await getPaymentInfo('invalid-id').catch(async (error: HTTPError) => {
-      const jsonResult = await error.response.json();
-      assertEquals((jsonResult as STDResponse<PaymentInfo>).ok, false, '(jsonResult as STDResponse<PaymentInfo>).ok is not false');
-      assertEquals(error.response.ok, false, 'error.response.ok is not false');
-      assertEquals(error.response.status, 404, 'error.response.status is not 404');
-    });
+
+  it('get api response with invalid id', async () => {
+    try {
+      await getPaymentInfo('invalid-id');
+      expect.fail('Expected getPaymentInfo to throw');
+    } catch (error) {
+      const httpError = error as HTTPError;
+      const jsonResult = await httpError.response.json();
+      expect((jsonResult as STDResponse<PaymentInfo>).ok).toBe(false);
+      expect(httpError.response.ok).toBe(false);
+      expect(httpError.response.status).toBe(404);
+    }
   });
 });
