@@ -2,11 +2,18 @@ import { createHash } from "node:crypto";
 import dayjs from "dayjs";
 import ky from 'ky'
 import { z } from 'zod/v4'
+import process from 'node:process'
+
+/** 兼容 Deno/Node：Deno 下 .env 注入到 import.meta.env，不注入 process.env */
+function env(key: string): string | undefined {
+  return (import.meta as unknown as { env?: Record<string, string> }).env?.[key] ?? process.env[key];
+}
+
 const APIS = {
   createCollectingOrder: 'api/createCollectingOrder',
 }
 const kyClient = ky.create({
-  prefixUrl: process.env.THAILAND_API_BASE_URL,
+  prefixUrl: env('THAILAND_API_BASE_URL'),
 })
 
 /**
@@ -129,7 +136,13 @@ export const CreateCollectingOrderParamsSchema = z.object({
    * 该值可以是 'no-callback'，或者其他字符串
    */
   playerSign: z.string(),
-  amount: z.string(),
+
+  /** 金额，字符串格式但必须是有效数字（可含小数） */
+  amount: z
+    .string()
+    .refine((val) => val.trim() !== '' && !Number.isNaN(Number(val)) && Number.isFinite(Number(val)), {
+      message: 'amount 必须是有效的数字字符串',
+    }),
   notifyUrl: z.string(),
   remark: z.string(),
 
@@ -168,7 +181,10 @@ export type CreateCollectingOrderParamsWithEnv = z.infer<typeof CreateCollecting
 export async function createCollectingOrder(params: CreateCollectingOrderParamsValidated) {
 
   const { merchantUniqueOrderId, playerSign, amount, notifyUrl, remark, ...ops } = params;
-  const { THAILAND_API_SECRET: md5Key, THAILAND_API_CHANNEL_ID: channelId, THAILAND_API_APP_ID: appId, THAILAND_API_MERCHANT_ID: merchantId } = process.env;
+  const md5Key = env('THAILAND_API_SECRET');
+  const channelId = env('THAILAND_API_CHANNEL_ID');
+  const appId = env('THAILAND_API_APP_ID');
+  const merchantId = env('THAILAND_API_MERCHANT_ID');
   const obj = {
     merchantUniqueOrderId,
     playerSign,
@@ -179,6 +195,7 @@ export async function createCollectingOrder(params: CreateCollectingOrderParamsV
     appId,
     merchantId
   }
+  console.log('createCollectingOrder params', obj);
   /**
    * 拼接md5签名需要的参数
    */

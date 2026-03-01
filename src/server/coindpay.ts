@@ -3,6 +3,11 @@ import { createHmac } from 'node:crypto'
 import process from 'node:process'
 import { z } from 'zod/v4'
 
+/** 兼容 Deno/Node：Deno 下 .env 注入到 import.meta.env，不注入 process.env */
+function env(key: string): string | undefined {
+  return (import.meta as unknown as { env?: Record<string, string> }).env?.[key] ?? process.env[key];
+}
+
 export const APIS = {
   /**
    * 获得支付信息详情
@@ -18,7 +23,7 @@ export const APIS = {
 
 
 export const kyClient = ky.create({
-  prefixUrl: process.env.COINDPAY_API_BASE_URL,
+  prefixUrl: env('COINDPAY_API_BASE_URL'),
 })
 
 export interface STDResponse<T> {
@@ -278,7 +283,7 @@ export function signPaymentsLinkSig(payload: PaymentsLinkSigPayload, secretKey: 
  * 当 queryData 中含有 price 时，会在内部用 secretKey（或环境变量 COINDPAY_API_SECRET）生成 signature。
  * @param link 支付链接 base URL
  * @param queryData 查询参数，含 price 时可不传 signature，由本函数生成
- * @param secretKey 商户 API Secret，不传时使用 process.env.COINDPAY_API_SECRET
+ * @param secretKey 商户 API Secret，不传时使用环境变量 COINDPAY_API_SECRET
  * @returns 拼接后的完整支付链接 URL
  */
 export async function getEncodePayLink(
@@ -298,7 +303,7 @@ export async function getEncodePayLink(
     validated.price !== null &&
     Number(validated.price) > 0;
   if (hasPrice && !validated.signature) {
-    const secret = secretKey ?? process.env.COINDPAY_API_SECRET;
+    const secret = secretKey ?? env('COINDPAY_API_SECRET');
     if (!secret || typeof secret !== 'string' || !secret.trim()) {
       throw new Error('当 price 存在时需配置 COINDPAY_API_SECRET 以生成签名');
     }
