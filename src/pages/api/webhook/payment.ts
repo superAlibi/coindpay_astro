@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { createHmacSignature } from "../../../server/apis";
+import { createHmacSignature } from "../../../server/coindpay";
 import { getKv } from "../../../server/kv";
 
 const API_SECRET_ENV = "COINDPAY_API_SECRET";

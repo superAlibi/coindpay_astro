@@ -16,12 +16,9 @@ export const APIS = {
 }
 
 
-function getApiBaseUrl(): string | undefined {
-  return process.env.COINDPAY_API_BASE_URL
-}
 
 export const kyClient = ky.create({
-  prefixUrl: getApiBaseUrl(),
+  prefixUrl: process.env.COINDPAY_API_BASE_URL,
 })
 
 export interface STDResponse<T> {

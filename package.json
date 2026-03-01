@@ -15,9 +15,11 @@
     "@deno/astro-adapter": "^0.3.0",
     "@deno/kv": "^0.13.0",
     "@std/assert": "npm:@jsr/std__assert@^1.0.19",
+    "@std/crypto": "npm:@jsr/std__crypto@^1.0.5",
     "@std/dotenv": "npm:@jsr/std__dotenv@^0.225.6",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.17.1",
+    "dayjs": "^1.11.19",
     "ky": "^1.14.3",
     "tailwindcss": "^4.2.1",
     "zod": "^4.3.6"

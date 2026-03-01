@@ -1,0 +1,121 @@
+---
+// Thailand 代收表单：提交到 POST /api/thailand
+// 对应 API 参数：playerSign, amount, remark, playerMobile, bankNameCreate, bankNumberCreate, nameCreate（merchantUniqueOrderId 由服务端生成）
+// notifyUrl 由服务端根据 site 自动设置为 /api/webhook/thailand
+---
+
+<div class="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 md:p-6">
+  <main class="w-full max-w-xl">
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200/80 p-6 md:p-8">
+      <h1 class="text-xl md:text-2xl font-semibold text-slate-800 tracking-tight">
+        泰国代收订单
+      </h1>
+      <p class="mt-2 text-sm text-slate-500">
+        填写以下信息创建代收订单，提交后将跳转至收银台支付页面。
+      </p>
+
+      <form
+        action="/api/thailand"
+        method="POST"
+        class="mt-6 space-y-5"
+      >
+        <div class="grid gap-5 md:grid-cols-2">
+          <div>
+            <label for="playerSign" class="block text-sm font-medium text-slate-700 mb-1.5">
+              玩家标识
+            </label>
+            <input
+              type="text"
+              id="playerSign"
+              name="playerSign"
+              placeholder="如玩家ID、账号 md5 等"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
+            />
+          </div>
+          <div>
+            <label for="amount" class="block text-sm font-medium text-slate-700 mb-1.5">
+              订单金额 (THB 泰铢)
+            </label>
+            <input
+              type="text"
+              id="amount"
+              name="amount"
+              placeholder="整数，如 100"
+              required
+              class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
+            />
+          </div>
+          <div class="md:col-span-2">
+            <label for="remark" class="block text-sm font-medium text-slate-700 mb-1.5">
+              商户备注
+            </label>
+            <input
+              type="text"
+              id="remark"
+              name="remark"
+              placeholder="可选，商户自定义备注"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
+            />
+          </div>
+          <div>
+            <label for="playerMobile" class="block text-sm font-medium text-slate-700 mb-1.5">
+              手机号
+            </label>
+            <input
+              type="text"
+              id="playerMobile"
+              name="playerMobile"
+              placeholder="玩家手机号"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
+            />
+          </div>
+          <div>
+            <label for="bankNameCreate" class="block text-sm font-medium text-slate-700 mb-1.5">
+              银行名称
+            </label>
+            <input
+              type="text"
+              id="bankNameCreate"
+              name="bankNameCreate"
+              placeholder="银行名称"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
+            />
+          </div>
+          <div>
+            <label for="bankNumberCreate" class="block text-sm font-medium text-slate-700 mb-1.5">
+              银行卡号
+            </label>
+            <input
+              type="text"
+              id="bankNumberCreate"
+              name="bankNumberCreate"
+              placeholder="银行卡号"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
+            />
+          </div>
+          <div>
+            <label for="nameCreate" class="block text-sm font-medium text-slate-700 mb-1.5">
+              户名
+            </label>
+            <input
+              type="text"
+              id="nameCreate"
+              name="nameCreate"
+              placeholder="户名"
+              class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
+            />
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-slate-800 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 min-h-[44px] transition-colors"
+          >
+            创建订单并前往支付
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>

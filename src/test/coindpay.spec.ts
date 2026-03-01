@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { getPaymentInfo, getEncodePayLink } from '../server/apis.ts';
+import { getPaymentInfo, getEncodePayLink } from '../server/coindpay.ts';
 import { HTTPError } from 'ky';
-import type { STDResponse, PaymentInfo } from '../server/apis.ts';
+import type { STDResponse, PaymentInfo } from '../server/coindpay.ts';
 
 const paymentLink = 'https://coindpay.xyz/pay/link/x_25lmobuZhWcSz7uw4Bm';
 

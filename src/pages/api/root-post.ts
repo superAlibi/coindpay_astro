@@ -4,7 +4,7 @@ import {
   getEncodePayLink,
   CoindPayUrlParamsSchema,
   type CoindPayUrlParams,
-} from "../../server/apis";
+} from "../../server/coindpay";
 
 const PAYMENT_LINK_ENV = "COINDPAY_PAYMENT_LINK";
 const API_SECRET_ENV = "COINDPAY_API_SECRET";
