@@ -248,13 +248,11 @@ export const CoindPayUrlParamsSchema = z
       const hasPrice = data.price !== undefined && data.price !== null && data.price > 0;
       if (!hasPrice) return true;
       return (
-        typeof data.signature === 'string' &&
-        data.signature.length > 0 &&
         typeof data.merchant_transaction_id === 'string' &&
         data.merchant_transaction_id.length > 0
       );
     },
-    { message: '当 price 存在时，signature 和 merchant_transaction_id 为必填参数' }
+    { message: '当 price 存在时，merchant_transaction_id 为必填参数' }
   );
 
 export type CoindPayUrlParamsValidated = z.infer<typeof CoindPayUrlParamsSchema>;
@@ -280,14 +278,16 @@ export function signPaymentsLinkSig(payload: PaymentsLinkSigPayload, secretKey: 
 
 /**
  * 传入支付链接和查询参数，返回拼接后的支付链接。
- * 当 queryData 中含有 price 时，必须同时提供 signature 和 merchant_transaction_id，否则抛出 ZodError。
- * @param link
- * @param queryData
+ * 当 queryData 中含有 price 时，会在内部用 secretKey（或环境变量 COINDPAY_API_SECRET）生成 signature。
+ * @param link 支付链接 base URL
+ * @param queryData 查询参数，含 price 时可不传 signature，由本函数生成
+ * @param secretKey 商户 API Secret，不传时使用 process.env.COINDPAY_API_SECRET
  * @returns 拼接后的完整支付链接 URL
  */
 export async function getEncodePayLink(
   link: string,
-  queryData?: CoindPayUrlParams
+  queryData?: CoindPayUrlParams,
+  secretKey?: string
 ): Promise<string> {
   const { success, data: validated, error } = await CoindPayUrlParamsSchema.safeParseAsync(queryData)
   if (!success) {
@@ -295,6 +295,25 @@ export async function getEncodePayLink(
     console.error(erorMessage);
     throw new Error(erorMessage);
   }
+
+  const hasPrice =
+    validated.price !== undefined &&
+    validated.price !== null &&
+    Number(validated.price) > 0;
+  if (hasPrice && !validated.signature) {
+    const secret = secretKey ?? process.env.COINDPAY_API_SECRET;
+    if (!secret || typeof secret !== 'string' || !secret.trim()) {
+      throw new Error('当 price 存在时需配置 COINDPAY_API_SECRET 以生成签名');
+    }
+    validated.signature = signPaymentsLinkSig(
+      {
+        merchant_transaction_id: validated.merchant_transaction_id,
+        price: validated.price,
+      },
+      secret
+    );
+  }
+
   const url = new URL(link);
 
   Object.entries(validated).forEach(([key, value]) => {

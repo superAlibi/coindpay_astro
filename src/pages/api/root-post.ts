@@ -7,6 +7,7 @@ import {
 } from "../../server/apis";
 
 const PAYMENT_LINK_ENV = "COINDPAY_PAYMENT_LINK";
+const API_SECRET_ENV = "COINDPAY_API_SECRET";
 const BODY_STRIP_KEYS = ["payment_link", "link", "merchant_transaction_id"] as const;
 
 /** 从 body 中移除服务端内置字段，只保留客户端可传参数 */
@@ -86,8 +87,8 @@ export const POST: APIRoute = async ({ request }) => {
   const paymentLink = import.meta.env[PAYMENT_LINK_ENV] ?? process.env[PAYMENT_LINK_ENV];
   if (!paymentLink || typeof paymentLink !== "string" || !paymentLink.trim()) {
     return jsonResponse(
-      { ok: false, message: "缺少支付链接", details: `请配置环境变量 ${PAYMENT_LINK_ENV}` },
-      400
+      { ok: false, message: "服务端配置错误，请联系管理员" },
+      500
     );
   }
 
@@ -105,10 +106,12 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const queryData = parsed.data as CoindPayUrlParams;
+  const secret =
+    import.meta.env[API_SECRET_ENV] ?? process.env[API_SECRET_ENV];
   let targetUrl: string;
 
   try {
-    targetUrl = await getEncodePayLink(paymentLink, queryData);
+    targetUrl = await getEncodePayLink(paymentLink, queryData, typeof secret === "string" ? secret : undefined);
   } catch (err) {
     const message = err instanceof Error ? err.message : "生成支付链接失败";
     return jsonResponse({ ok: false, message }, 400);

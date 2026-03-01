@@ -1,4 +1,5 @@
 ---
+import "../styles/global.css";
 const { headers } = Astro.request;
 const acceptLanguage = headers.get("Accept-Language");
 const lang = acceptLanguage?.split(",")[0]?.split("-")[0] ?? "en";

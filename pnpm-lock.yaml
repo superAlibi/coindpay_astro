@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@deno/astro-adapter':
+        specifier: ^0.3.0
+        version: 0.3.2(astro@5.18.0(@types/node@22.19.13)(jiti@2.6.1)(lightningcss@1.31.1)(rollup@4.59.0)(typescript@5.9.3))
       '@std/assert':
         specifier: npm:@jsr/std__assert@^1.0.19
         version: '@jsr/std__assert@1.0.19'
@@ -79,6 +82,15 @@ packages:
   '@capsizecss/unpack@4.0.0':
     resolution: {integrity: sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA==}
     engines: {node: '>=18'}
+
+  '@deno/astro-adapter@0.3.2':
+    resolution: {integrity: sha512-nN0kQGobRs2XE3R+O/DWYQanEWpteJNsIf5TD65787qFEw2CrqkFNcNolZFJiKUF/2Y/TKyOLRjMS3F6auECVg==}
+    peerDependencies:
+      '@opentelemetry/api': ^1
+      astro: ^5.0.1
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
 
   '@emnapi/runtime@1.8.1':
     resolution: {integrity: sha512-mehfKSMWjjNol8659Z8KxEMrdSJDDot5SXMq00dM8BN4o+CLNXQ0xH2V7EchNHV4RmbZLmmPdEaXZc5H2FXmDg==}
@@ -2129,6 +2141,10 @@ snapshots:
   '@capsizecss/unpack@4.0.0':
     dependencies:
       fontkitten: 1.0.2
+
+  '@deno/astro-adapter@0.3.2(astro@5.18.0(@types/node@22.19.13)(jiti@2.6.1)(lightningcss@1.31.1)(rollup@4.59.0)(typescript@5.9.3))':
+    dependencies:
+      astro: 5.18.0(@types/node@22.19.13)(jiti@2.6.1)(lightningcss@1.31.1)(rollup@4.59.0)(typescript@5.9.3)
 
   '@emnapi/runtime@1.8.1':
     dependencies:

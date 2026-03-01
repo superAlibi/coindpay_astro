@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getPaymentInfo, getEncodePayLink, signPaymentsLinkSig } from '../server/apis.ts';
+import { getPaymentInfo, getEncodePayLink } from '../server/apis.ts';
 import { HTTPError } from 'ky';
 import type { STDResponse, PaymentInfo } from '../server/apis.ts';
 
@@ -19,21 +19,13 @@ describe('coindpay api', () => {
   });
 
   it('gen payment link', async () => {
-    const signaturePayload = {
+    const response = await getEncodePayLink(paymentLink, {
       merchant_transaction_id: crypto.randomUUID(),
       price: 60.0,
-    };
-    const signature = signPaymentsLinkSig(
-      signaturePayload,
-      process.env.COINDPAY_API_SECRET!
-    );
-    const response = await getEncodePayLink(paymentLink, {
       title: '嘻嘻不嘻嘻',
       desc: '不嘻嘻',
       name: '布鲁斯',
       email: 'bruce@gmail.com',
-      signature,
-      ...signaturePayload,
     });
     const isValidUrl = (s: string) => {
       try {
@@ -44,23 +36,16 @@ describe('coindpay api', () => {
       }
     };
     expect(isValidUrl(response)).toBe(true);
+    expect(response).toContain('signature=');
   });
 
   it('gen payment link without price', async () => {
-    const signaturePayload = {
-      merchant_transaction_id: crypto.randomUUID(),
-    };
-    const signature = signPaymentsLinkSig(
-      signaturePayload,
-      process.env.COINDPAY_API_SECRET!
-    );
     const response = await getEncodePayLink(paymentLink, {
+      merchant_transaction_id: crypto.randomUUID(),
       title: '嘻嘻不嘻嘻',
       desc: '不嘻嘻',
       name: '布鲁斯',
       email: 'bruce@gmail.com',
-      signature,
-      ...signaturePayload,
     });
     const isValidUrl = (s: string) => {
       try {
@@ -74,15 +59,12 @@ describe('coindpay api', () => {
   });
 
   it('gen payment link without price and no signature', async () => {
-    const signaturePayload = {
-      merchant_transaction_id: crypto.randomUUID(),
-    };
     const response = await getEncodePayLink(paymentLink, {
+      merchant_transaction_id: crypto.randomUUID(),
       title: '嘻嘻不嘻嘻',
       desc: '不嘻嘻',
       name: '布鲁斯',
       email: 'bruce@gmail.com',
-      ...signaturePayload,
     });
     const isValidUrl = (s: string) => {
       try {
@@ -96,21 +78,16 @@ describe('coindpay api', () => {
   });
 
   it('gen payment link with price but without signature', async () => {
-    const signaturePayload = {
+    const response = await getEncodePayLink(paymentLink, {
       merchant_transaction_id: crypto.randomUUID(),
       price: 60.0,
-    };
-    await expect(
-      getEncodePayLink(paymentLink, {
-        title: '嘻嘻不嘻嘻',
-        desc: '不嘻嘻',
-        name: '布鲁斯',
-        email: 'bruce@gmail.com',
-        ...signaturePayload,
-      })
-    ).rejects.toThrow(
-      '当 price 存在时，signature 和 merchant_transaction_id 为必填参数'
-    );
+      title: '嘻嘻不嘻嘻',
+      desc: '不嘻嘻',
+      name: '布鲁斯',
+      email: 'bruce@gmail.com',
+    });
+    expect(response).toContain('signature=');
+    expect(response).toContain('price=60');
   });
 
   it('get api response', async () => {

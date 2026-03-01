@@ -5,12 +5,14 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs",
     "astro": "astro",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "deploy:deno": "pnpm run build && cd dist && deployctl deploy --project=coindpay ./server/entry.mjs"
   },
   "dependencies": {
+    "@deno/astro-adapter": "^0.3.0",
     "@std/assert": "npm:@jsr/std__assert@^1.0.19",
     "@std/dotenv": "npm:@jsr/std__dotenv@^0.225.6",
     "@tailwindcss/vite": "^4.2.1",
