@@ -195,7 +195,6 @@ export async function createCollectingOrder(params: CreateCollectingOrderParamsV
     appId,
     merchantId
   }
-  console.log('createCollectingOrder params', obj);
   /**
    * 拼接md5签名需要的参数
    */
