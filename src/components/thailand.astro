@@ -2,9 +2,13 @@
 // Thailand 代收表单：提交到 POST /api/thailand
 // 对应 API 参数：playerSign, amount, remark, playerMobile, bankNameCreate, bankNumberCreate, nameCreate（merchantUniqueOrderId 由服务端生成）
 // notifyUrl 由服务端根据 site 自动设置为 /api/webhook/thailand
+interface Props{
+  class?: string;
+}
+const { class: className } = Astro.props;
 ---
 
-<div class="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 md:p-6">
+<div class={` flex flex-col items-center justify-center p-4 md:p-6 ${className}`}>
   <main class="w-full max-w-xl">
     <section class="bg-white rounded-xl shadow-sm border border-slate-200/80 p-6 md:p-8">
       <h1 class="text-xl md:text-2xl font-semibold text-slate-800 tracking-tight">

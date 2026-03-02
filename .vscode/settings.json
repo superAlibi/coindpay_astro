@@ -1,2 +1,6 @@
 {
+  "tailwindCSS.includeLanguages": {
+    "astro": "html"
+  },
+  "tailwindCSS.classAttributes": ["class", "class:list", "className"]
 }

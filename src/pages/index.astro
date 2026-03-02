@@ -5,16 +5,16 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
-	<div class="tab-container">
-		<div id="coindpay" class="tab-page">
-			<a href="#coindpay" class="tab">CoindPay</a>
-			<div class="panel">
+	<div class="flex flex-wrap justify-center items-start gap-4 min-h-screen">
+		<div id="coindpay" class="tab-page contents group">
+			<a href="#coindpay" class="order-1 group-target:text-slate-800 group-target:bg-[#0f172a14] group-target:font-semibold inline-flex items-center px-4 py-2 rounded-lg text-slate-500  hover:text-slate-800 hover:bg-slate-100">CoindPay</a>
+			<div class=" basis-full w-full group-target:block hidden order-2">
 				<CoindPay />
 			</div>
 		</div>
-		<div id="thailand" class="tab-page">
-			<a href="#thailand" class="tab">泰国代收</a>
-			<div class="panel">
+		<div id="thailand" class="tab-page contents group">
+			<a href="#thailand" class="order-1 group-target:text-slate-800 group-target:bg-[#0f172a14] group-target:font-semibold inline-flex items-center px-4 py-2 rounded-lg text-slate-500  hover:text-slate-800 hover:bg-slate-100">泰国代收</a>
+			<div class=" basis-full w-full group-target:block hidden order-2">
 				<Thailand />
 			</div>
 		</div>
@@ -28,59 +28,6 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
-	.tab-container {
-		display: grid;
-		grid-template-columns: auto auto;
-		grid-template-rows: auto 1fr;
-		gap: 0 1rem;
-		min-height: 100vh;
-	}
 
-	.tab-page {
-		display: contents;
-	}
 
-	.tab-page .tab {
-		display: inline-flex;
-		align-items: center;
-		padding: 0.5rem 1rem;
-		margin-bottom: 0.5rem;
-		font-size: 0.9375rem;
-		font-weight: 500;
-		color: var(--tab-color, #475569);
-		text-decoration: none;
-		border-radius: 0.5rem;
-		transition: color 0.15s, background 0.15s;
-	}
-
-	.tab-page .tab:hover {
-		color: #0f172a;
-		background: rgba(15, 23, 42, 0.06);
-	}
-
-	.tab-page:target .tab {
-		color: #0f172a;
-		background: rgba(15, 23, 42, 0.08);
-		font-weight: 600;
-	}
-
-	#coindpay .tab {
-		grid-column: 1;
-		grid-row: 1;
-	}
-
-	#thailand .tab {
-		grid-column: 2;
-		grid-row: 1;
-	}
-
-	.tab-page .panel {
-		grid-column: 1 / -1;
-		grid-row: 2;
-		display: none;
-	}
-
-	.tab-page:target .panel {
-		display: block;
-	}
 </style>

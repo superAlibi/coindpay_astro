@@ -1,9 +1,13 @@
 ---
 // CoindPay payment form: submits to POST / (rewritten to /api/root-post).
 // payment_link and merchant_transaction_id are server-side; client sends title, desc, name, email, price (optional).
+interface Props{
+  class?: string;
+}
+const { class: className } = Astro.props;
 ---
 
-<div class="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 md:p-6">
+<div class={`  flex flex-col items-center justify-center p-4 md:p-6 ${className}`}>
   <main class="w-full max-w-xl">
     <section class="bg-white rounded-xl shadow-sm border border-slate-200/80 p-6 md:p-8">
       <h1 class="text-xl md:text-2xl font-semibold text-slate-800 tracking-tight">
