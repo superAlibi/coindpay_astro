@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "coindpay": "CoindPay",
+    "thailand": "รับเงินไทย"
+  },
+  "coindpay": {
+    "title": "การชำระเงิน",
+    "subtitle": "กรอกรายละเอียดด้านล่างเพื่อไปยังหน้าชำระเงินที่ปลอดภัย",
+    "fields": {
+      "title": "หัวข้อ",
+      "titlePlaceholder": "เช่น ใบแจ้งหนี้ #1234",
+      "description": "คำอธิบาย",
+      "descriptionPlaceholder": "คำอธิบายการชำระเงินโดยย่อ",
+      "name": "ชื่อ",
+      "namePlaceholder": "ชื่อของคุณ",
+      "email": "อีเมล",
+      "emailPlaceholder": "you@example.com",
+      "amount": "จำนวนเงิน (ไม่บังคับ)",
+      "amountPlaceholder": "เว้นว่างสำหรับจำนวนที่เปลี่ยนแปลงได้"
+    },
+    "buttons": {
+      "submit": "ดำเนินการชำระเงิน"
+    }
+  },
+  "thailand": {
+    "title": "คำสั่งรับเงินไทย",
+    "subtitle": "กรอกข้อมูลด้านล่างเพื่อสร้างคำสั่งรับเงิน หลังจากส่งแล้วจะนำคุณไปยังหน้าชำระเงิน",
+    "fields": {
+      "playerSign": "รหัสผู้เล่น",
+      "playerSignPlaceholder": "เช่น รหัสผู้เล่น, md5 บัญชี",
+      "amount": "จำนวนคำสั่ง (บาท)",
+      "amountPlaceholder": "เช่น 100",
+      "remark": "หมายเหตุร้านค้า",
+      "remarkPlaceholder": "ไม่บังคับ หมายเหตุร้านค้า",
+      "playerMobile": "เบอร์โทรศัพท์",
+      "playerMobilePlaceholder": "เบอร์โทรผู้เล่น",
+      "bankName": "ชื่อธนาคาร",
+      "bankNamePlaceholder": "ชื่อธนาคาร",
+      "bankNumber": "เลขบัญชีธนาคาร",
+      "bankNumberPlaceholder": "เลขบัญชีธนาคาร",
+      "accountName": "ชื่อบัญชี",
+      "accountNamePlaceholder": "ชื่อบัญชี"
+    },
+    "buttons": {
+      "submit": "สร้างคำสั่งและชำระเงิน"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "coindpay": "CoindPay",
+    "thailand": "泰国代收"
+  },
+  "coindpay": {
+    "title": "支付",
+    "subtitle": "请填写以下信息以进入安全支付页面。",
+    "fields": {
+      "title": "标题",
+      "titlePlaceholder": "如：发票 #1234",
+      "description": "描述",
+      "descriptionPlaceholder": "简要描述付款内容",
+      "name": "姓名",
+      "namePlaceholder": "您的姓名",
+      "email": "邮箱",
+      "emailPlaceholder": "you@example.com",
+      "amount": "金额（选填）",
+      "amountPlaceholder": "留空表示可变金额"
+    },
+    "buttons": {
+      "submit": "前往支付"
+    }
+  },
+  "thailand": {
+    "title": "泰国代收订单",
+    "subtitle": "填写以下信息创建代收订单，提交后将跳转至收银台支付页面。",
+    "fields": {
+      "playerSign": "玩家标识",
+      "playerSignPlaceholder": "如玩家ID、账号 md5 等",
+      "amount": "订单金额 (THB 泰铢)",
+      "amountPlaceholder": "如 100",
+      "remark": "商户备注",
+      "remarkPlaceholder": "可选，商户自定义备注",
+      "playerMobile": "手机号",
+      "playerMobilePlaceholder": "玩家手机号",
+      "bankName": "银行名称",
+      "bankNamePlaceholder": "银行名称",
+      "bankNumber": "银行卡号",
+      "bankNumberPlaceholder": "银行卡号",
+      "accountName": "户名",
+      "accountNamePlaceholder": "户名"
+    },
+    "buttons": {
+      "submit": "创建订单并前往支付"
+    }
+  }
+}

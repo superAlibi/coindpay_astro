@@ -1,21 +1,30 @@
 ---
-import CoindPay from '../components/coindpay.astro';
-import Thailand from '../components/thailand.astro';
-import Layout from '../layouts/Layout.astro';
-import { t } from '../i18n';
+import CoindPay from '../../components/coindpay.astro';
+import Thailand from '../../components/thailand.astro';
+import Layout from '../../layouts/Layout.astro';
+import { t, type Locale } from '../../i18n';
 
-const locale = Astro.locals.locale;
+const SUPPORTED: Locale[] = ['en', 'zh', 'th'];
+const pathLocaleRaw = Astro.params.locale;
+const pathLocale =
+  typeof pathLocaleRaw === 'string'
+    ? pathLocaleRaw.split('/')[0]?.toLowerCase()
+    : undefined;
+const locale: Locale =
+  pathLocale && SUPPORTED.includes(pathLocale as Locale)
+    ? (pathLocale as Locale)
+    : Astro.locals.locale;
 ---
 
 <Layout locale={locale}>
 	<div class="flex flex-wrap justify-center items-start gap-4 min-h-screen">
-		<div id="coindpay" class="tab-page contents group">
+		<div id="coindpay" class="contents group">
 			<a href="#coindpay" class="order-1 group-target:text-slate-800 group-target:bg-[#0f172a14] group-target:font-semibold inline-flex items-center px-4 py-2 rounded-lg text-slate-500  hover:text-slate-800 hover:bg-slate-100">{t(locale, 'nav.coindpay')}</a>
 			<div class=" basis-full w-full group-target:block hidden order-2">
 				<CoindPay locale={locale} />
 			</div>
 		</div>
-		<div id="thailand" class="tab-page contents group">
+		<div id="thailand" class="contents group">
 			<a href="#thailand" class="order-1 group-target:text-slate-800 group-target:bg-[#0f172a14] group-target:font-semibold inline-flex items-center px-4 py-2 rounded-lg text-slate-500  hover:text-slate-800 hover:bg-slate-100">{t(locale, 'nav.thailand')}</a>
 			<div class=" basis-full w-full group-target:block hidden order-2">
 				<Thailand locale={locale} />

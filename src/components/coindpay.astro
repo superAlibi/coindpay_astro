@@ -1,79 +1,80 @@
 ---
-// CoindPay payment form: submits to POST / (rewritten to /api/root-post).
-// payment_link and merchant_transaction_id are server-side; client sends title, desc, name, email, price (optional).
-interface Props{
+import { t, type Locale } from '../i18n';
+
+interface Props {
   class?: string;
+  locale: Locale;
 }
-const { class: className } = Astro.props;
+const { class: className, locale } = Astro.props;
 ---
 
 <div class={`  flex flex-col items-center justify-center p-4 md:p-6 ${className}`}>
   <main class="w-full max-w-xl">
     <section class="bg-white rounded-xl shadow-sm border border-slate-200/80 p-6 md:p-8">
       <h1 class="text-xl md:text-2xl font-semibold text-slate-800 tracking-tight">
-        Payment
+        {t(locale, 'coindpay.title')}
       </h1>
       <p class="mt-2 text-sm text-slate-500">
-        Fill in the details below to proceed to the secure payment page.
+        {t(locale, 'coindpay.subtitle')}
       </p>
 
       <form
-        action="/"
+        action="/coindpay"
         method="POST"
         class="mt-6 space-y-5"
       >
         <div class="grid gap-5 md:grid-cols-2">
           <div class="md:col-span-2">
             <label for="title" class="block text-sm font-medium text-slate-700 mb-1.5">
-              Title
+              {t(locale, 'coindpay.fields.title')}
             </label>
             <input
               type="text"
               id="title"
               name="title"
-              placeholder="e.g. Invoice #1234"
+              placeholder={t(locale, 'coindpay.fields.titlePlaceholder')}
               class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
             />
           </div>
           <div class="md:col-span-2">
             <label for="desc" class="block text-sm font-medium text-slate-700 mb-1.5">
-              Description
+              {t(locale, 'coindpay.fields.description')}
             </label>
             <textarea
               id="desc"
               name="desc"
               rows={3}
-              placeholder="Brief description of the payment"
+              placeholder={t(locale, 'coindpay.fields.descriptionPlaceholder')}
               class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 resize-y min-h-[44px]"
             />
           </div>
           <div>
             <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">
-              Name
+              {t(locale, 'coindpay.fields.name')}
             </label>
             <input
               type="text"
               id="name"
               name="name"
-              placeholder="Your name"
+              placeholder={t(locale, 'coindpay.fields.namePlaceholder')}
               class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
             />
           </div>
           <div>
             <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">
-              Email
+              {t(locale, 'coindpay.fields.email')}
             </label>
             <input
               type="email"
               id="email"
               name="email"
-              placeholder="you@example.com"
+              placeholder={t(locale, 'coindpay.fields.emailPlaceholder')}
               class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
             />
           </div>
           <div class="md:col-span-2">
             <label for="price" class="block text-sm font-medium text-slate-700 mb-1.5">
-              Amount (optional)
+              {t(locale, 'coindpay.fields.amount')}
             </label>
             <input
               type="number"
@@ -81,7 +82,7 @@ const { class: className } = Astro.props;
               name="price"
               step="0.01"
               min="0"
-              placeholder="Leave empty for variable amount"
+              placeholder={t(locale, 'coindpay.fields.amountPlaceholder')}
               class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/20 min-h-[44px]"
             />
           </div>
@@ -92,7 +93,7 @@ const { class: className } = Astro.props;
             type="submit"
             class="w-full rounded-lg bg-slate-800 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 min-h-[44px] transition-colors"
           >
-            Proceed to Pay
+            {t(locale, 'coindpay.buttons.submit')}
           </button>
         </div>
       </form>

@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "coindpay": "CoindPay",
+    "thailand": "Thailand Collection"
+  },
+  "coindpay": {
+    "title": "Payment",
+    "subtitle": "Fill in the details below to proceed to the secure payment page.",
+    "fields": {
+      "title": "Title",
+      "titlePlaceholder": "e.g. Invoice #1234",
+      "description": "Description",
+      "descriptionPlaceholder": "Brief description of the payment",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "amount": "Amount (optional)",
+      "amountPlaceholder": "Leave empty for variable amount"
+    },
+    "buttons": {
+      "submit": "Proceed to Pay"
+    }
+  },
+  "thailand": {
+    "title": "Thailand Collection Order",
+    "subtitle": "Fill in the details below to create a collection order. You will be redirected to the payment page after submission.",
+    "fields": {
+      "playerSign": "Player ID",
+      "playerSignPlaceholder": "e.g. Player ID, account md5",
+      "amount": "Order amount (THB)",
+      "amountPlaceholder": "e.g. 100",
+      "remark": "Merchant remark",
+      "remarkPlaceholder": "Optional, merchant note",
+      "playerMobile": "Mobile number",
+      "playerMobilePlaceholder": "Player mobile number",
+      "bankName": "Bank name",
+      "bankNamePlaceholder": "Bank name",
+      "bankNumber": "Bank account number",
+      "bankNumberPlaceholder": "Bank account number",
+      "accountName": "Account name",
+      "accountNamePlaceholder": "Account name"
+    },
+    "buttons": {
+      "submit": "Create order and pay"
+    }
+  }
+}

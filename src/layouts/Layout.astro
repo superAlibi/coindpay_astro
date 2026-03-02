@@ -1,12 +1,14 @@
 ---
 import "../styles/global.css";
-const { headers } = Astro.request;
-const acceptLanguage = headers.get("Accept-Language");
-const lang = acceptLanguage?.split(",")[0]?.split("-")[0] ?? "en";
+
+interface Props {
+  locale: 'en' | 'zh' | 'th';
+}
+const { locale } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={locale}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
