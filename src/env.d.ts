@@ -1,6 +1,7 @@
 interface ImportMetaEnv {
   readonly DENO_KV_ACCESS_TOKEN: string;
 
+
   readonly COINDPAY_API_BASE_URL: string;
   readonly COINDPAY_API_SECRET: string;
   readonly COINDPAY_PAYMENT_LINK: string;
@@ -10,6 +11,10 @@ interface ImportMetaEnv {
   readonly THAILAND_API_CHANNEL_ID: string;
   readonly THAILAND_API_APP_ID: string;
   readonly THAILAND_API_MERCHANT_ID: string;
+  readonly THAILAND_WHITE_LIST_IP: string;
+
+
+
 }
 
 interface ImportMeta {

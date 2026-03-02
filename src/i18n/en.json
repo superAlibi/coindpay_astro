@@ -4,7 +4,7 @@
     "thailand": "Thailand Collection"
   },
   "coindpay": {
-    "title": "Payment",
+    "title": "CoindPay Payment",
     "subtitle": "Fill in the details below to proceed to the secure payment page.",
     "fields": {
       "title": "Title",

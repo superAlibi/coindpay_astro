@@ -11,7 +11,16 @@ const API_SECRET_ENV = "THAILAND_API_SECRET";
 const SUCCESS_RESPONSE = "SUCCESS";
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
-
+  /**
+   * 当不在白名单时，返回 403 错误
+   * @see http://sandbox.bossbia.xyz:3031/
+   */
+  if (!env('THAILAND_WHITE_LIST_IP')?.includes(clientAddress)) {
+    return new Response("IP not allowed", {
+      status: 403,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  }
   const md5Key = env(API_SECRET_ENV);
 
   if (!md5Key || typeof md5Key !== "string" || !md5Key.trim()) {

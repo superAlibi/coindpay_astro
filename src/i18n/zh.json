@@ -4,7 +4,7 @@
     "thailand": "泰国代收"
   },
   "coindpay": {
-    "title": "支付",
+    "title": "CoindPay支付",
     "subtitle": "请填写以下信息以进入安全支付页面。",
     "fields": {
       "title": "标题",
