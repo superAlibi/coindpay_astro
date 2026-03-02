@@ -2,12 +2,8 @@ import { createHash } from "node:crypto";
 import dayjs from "dayjs";
 import ky from 'ky'
 import { z } from 'zod/v4'
-import process from 'node:process'
+import { env } from "../tools";
 
-/** 兼容 Deno/Node：Deno 下 .env 注入到 import.meta.env，不注入 process.env */
-function env(key: string): string | undefined {
-  return (import.meta as unknown as { env?: Record<string, string> }).env?.[key] ?? process.env[key];
-}
 
 const APIS = {
   createCollectingOrder: 'api/createCollectingOrder',

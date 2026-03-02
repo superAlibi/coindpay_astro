@@ -5,6 +5,7 @@ import {
   CoindPayUrlParamsSchema,
   type CoindPayUrlParams,
 } from "../../server/coindpay";
+import { env } from "../../tools";
 
 const PAYMENT_LINK_ENV = "COINDPAY_PAYMENT_LINK";
 const API_SECRET_ENV = "COINDPAY_API_SECRET";
@@ -84,7 +85,7 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ ok: false, message: "Unsupported content type" }, 400);
   }
 
-  const paymentLink = import.meta.env[PAYMENT_LINK_ENV] ?? process.env[PAYMENT_LINK_ENV];
+  const paymentLink = env(PAYMENT_LINK_ENV);
   if (!paymentLink || typeof paymentLink !== "string" || !paymentLink.trim()) {
     return jsonResponse(
       { ok: false, message: "服务端配置错误，请联系管理员" },
@@ -106,8 +107,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const queryData = parsed.data as CoindPayUrlParams;
-  const secret =
-    import.meta.env[API_SECRET_ENV] ?? process.env[API_SECRET_ENV];
+  const secret = env(API_SECRET_ENV);
   let targetUrl: string;
 
   try {

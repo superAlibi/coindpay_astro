@@ -1,12 +1,9 @@
 import ky from 'ky'
 import { createHmac } from 'node:crypto'
-import process from 'node:process'
 import { z } from 'zod/v4'
+import { env } from '../tools'
 
-/** 兼容 Deno/Node：Deno 下 .env 注入到 import.meta.env，不注入 process.env */
-function env(key: string): string | undefined {
-  return (import.meta as unknown as { env?: Record<string, string> }).env?.[key] ?? process.env[key];
-}
+
 
 export const APIS = {
   /**

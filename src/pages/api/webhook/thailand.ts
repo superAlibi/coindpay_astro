@@ -4,15 +4,15 @@ import {
   type CollectingNotifyPayload,
 } from "../../../server/thailand";
 import { getKv } from "../../../server/kv";
-
+import { env } from "../../../tools";
 const API_SECRET_ENV = "THAILAND_API_SECRET";
 
 /** 确认收到回调需返回的字符串，文档要求 */
 const SUCCESS_RESPONSE = "SUCCESS";
 
-export const POST: APIRoute = async ({ request }) => {
-  const md5Key =
-    import.meta.env[API_SECRET_ENV] ?? process.env[API_SECRET_ENV];
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+
+  const md5Key = env(API_SECRET_ENV);
 
   if (!md5Key || typeof md5Key !== "string" || !md5Key.trim()) {
     return new Response("Server config error", {

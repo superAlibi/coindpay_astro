@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { createHmacSignature } from "../../../server/coindpay";
 import { getKv } from "../../../server/kv";
+import { env } from "../../../tools";
 
 const API_SECRET_ENV = "COINDPAY_API_SECRET";
 
@@ -15,8 +16,7 @@ function jsonResponse(
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const secretKey =
-    import.meta.env[API_SECRET_ENV] ?? process.env[API_SECRET_ENV];
+  const secretKey = env(API_SECRET_ENV);
 
   if (!secretKey || typeof secretKey !== "string" || !secretKey.trim()) {
     return jsonResponse(
@@ -37,7 +37,7 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ ok: false, message: "Invalid signature" }, 401);
   }
 
-  let data: { id?: string; rampStatus?: string; [k: string]: unknown };
+  let data: { id?: string; rampStatus?: string;[k: string]: unknown };
   try {
     data = JSON.parse(rawBody) as typeof data;
   } catch {
