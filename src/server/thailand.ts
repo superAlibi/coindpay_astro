@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import dayjs from "dayjs";
 import ky from 'ky'
 import { z } from 'zod/v4'
-import { env } from "../tools";
+import { env } from "../tools/index.ts";
 
 
 const APIS = {

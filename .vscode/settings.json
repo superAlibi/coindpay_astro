@@ -2,5 +2,10 @@
   "tailwindCSS.includeLanguages": {
     "astro": "html"
   },
-  "tailwindCSS.classAttributes": ["class", "class:list", "className"]
+  "tailwindCSS.classAttributes": [
+    "class",
+    "class:list",
+    "className"
+  ],
+  "deno.enable": true
 }

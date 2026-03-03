@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeAll } from 'vitest';
 import { getKv } from '../server/kv';
 import { env } from '../tools';
 
@@ -7,20 +7,19 @@ const TEST_KEY = ['test', 'connectivity', crypto.randomUUID()];
 describe('Deno KV 连接性', () => {
   let kv: Awaited<ReturnType<typeof getKv>>;
 
+
   afterEach(async () => {
     if (kv) {
-      kv?.close();
+      kv.close();
     }
   });
 
-  it('get env DENO_KV_DB_ID', () => {
+  it('get env', () => {
     const DENO_KV_DB_ID = env('DENO_KV_DB_ID');
+    const DENO_KV_ACCESS_TOKEN = env('DENO_KV_ACCESS_TOKEN');
+    console.log(DENO_KV_DB_ID, DENO_KV_ACCESS_TOKEN);
     expect(DENO_KV_DB_ID).toBeDefined();
     expect(DENO_KV_DB_ID).toBeTruthy();
-  });
-
-  it('get env DENO_KV_ACCESS_TOKEN', () => {
-    const DENO_KV_ACCESS_TOKEN = env('DENO_KV_ACCESS_TOKEN');
     expect(DENO_KV_ACCESS_TOKEN).toBeDefined();
     expect(DENO_KV_ACCESS_TOKEN).toBeTruthy();
   });
