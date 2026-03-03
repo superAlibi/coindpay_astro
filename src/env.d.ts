@@ -1,5 +1,6 @@
 interface ImportMetaEnv {
   readonly DENO_KV_ACCESS_TOKEN: string;
+  readonly DENO_KV_DB_ID: string;
 
 
   readonly COINDPAY_API_BASE_URL: string;

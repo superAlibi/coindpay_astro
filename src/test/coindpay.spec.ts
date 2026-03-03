@@ -2,12 +2,13 @@ import { describe, it, expect } from 'vitest';
 import { getPaymentInfo, getEncodePayLink } from '../server/coindpay.ts';
 import { HTTPError } from 'ky';
 import type { STDResponse, PaymentInfo } from '../server/coindpay.ts';
+import { env } from '../tools';
 
 const paymentLink = 'https://coindpay.xyz/pay/link/x_25lmobuZhWcSz7uw4Bm';
 
 describe('coindpay api', () => {
   it('get env COINDPAY_API_BASE_URL', () => {
-    const COINDPAY_API_BASE_URL = process.env.COINDPAY_API_BASE_URL;
+    const COINDPAY_API_BASE_URL = env('COINDPAY_API_BASE_URL');
     expect(COINDPAY_API_BASE_URL).toBeDefined();
     expect(COINDPAY_API_BASE_URL).toBeTruthy();
   });
