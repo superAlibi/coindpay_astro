@@ -6,17 +6,18 @@ import {
   md5,
   type CreateCollectingOrderParamsValidated,
 } from '../server/thailand.ts';
+import { env } from '../tools/index.ts';
 
 describe('createCollectingOrder（集成：真实请求泰国支付）', () => {
-  /* it('需要配置泰国支付相关环境变量', () => {
-    expect(process.env.THAILAND_API_BASE_URL).toBeDefined();
-    expect(process.env.THAILAND_API_SECRET).toBeDefined();
-    expect(process.env.THAILAND_API_CHANNEL_ID).toBeDefined();
-    expect(process.env.THAILAND_API_APP_ID).toBeDefined();
-    expect(process.env.THAILAND_API_MERCHANT_ID).toBeDefined();
-  }); */
+  it('需要配置泰国支付相关环境变量', () => {
+    expect(env('THAILAND_API_BASE_URL')).toBeDefined();
+    expect(env('THAILAND_API_SECRET')).toBeDefined();
+    expect(env('THAILAND_API_CHANNEL_ID')).toBeDefined();
+    expect(env('THAILAND_API_APP_ID')).toBeDefined();
+    expect(env('THAILAND_API_MERCHANT_ID')).toBeDefined();
+  });
 
-  /* it('能成功调用 createCollectingOrder 并拿到收银台链接', async () => {
+  it('能成功调用 createCollectingOrder 并拿到收银台链接', async () => {
     const params: CreateCollectingOrderParamsValidated = {
       merchantUniqueOrderId: `test-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
       playerSign: 'no-callback',
@@ -39,7 +40,7 @@ describe('createCollectingOrder（集成：真实请求泰国支付）', () => {
     expect(result.data!.url).toBeDefined();
     expect(result.data!.amount).toBe(params.amount);
     expect(result.data!.playerMobile).toBe(params.playerMobile);
-  }, 15000); */
+  }, 15000);
 });
 
 describe('代收回调验签', () => {
