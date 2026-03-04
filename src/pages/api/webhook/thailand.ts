@@ -5,7 +5,6 @@ import {
 } from "../../../server/thailand";
 import { getKv } from "../../../server/kv";
 import { env } from "../../../tools";
-const API_SECRET_ENV = "THAILAND_API_SECRET";
 
 /** 确认收到回调需返回的字符串，文档要求 */
 const SUCCESS_RESPONSE = "SUCCESS";
@@ -21,7 +20,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  const md5Key = env(API_SECRET_ENV);
+  const md5Key = env('THAILAND_API_SECRET');
 
   if (!md5Key || typeof md5Key !== "string" || !md5Key.trim()) {
     return new Response("Server config error", {

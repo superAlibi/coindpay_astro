@@ -10,11 +10,11 @@ import { env } from '../tools/index.ts';
 
 describe('createCollectingOrder（集成：真实请求泰国支付）', () => {
   it('需要配置泰国支付相关环境变量', () => {
-    expect(env('THAILAND_API_BASE_URL')).toBeDefined();
-    expect(env('THAILAND_API_SECRET')).toBeDefined();
-    expect(env('THAILAND_API_CHANNEL_ID')).toBeDefined();
-    expect(env('THAILAND_API_APP_ID')).toBeDefined();
-    expect(env('THAILAND_API_MERCHANT_ID')).toBeDefined();
+    expect(env('THAILAND_API_BASE_URL'), '未配置 THAILAND_API_BASE_URL 环境变量').toBeDefined();
+    expect(env('THAILAND_API_SECRET'), '未配置 THAILAND_API_SECRET 环境变量').toBeDefined();
+    expect(env('THAILAND_API_CHANNEL_ID'), '未配置 THAILAND_API_CHANNEL_ID 环境变量').toBeDefined();
+    expect(env('THAILAND_API_APP_ID'), '未配置 THAILAND_API_APP_ID 环境变量').toBeDefined();
+    expect(env('THAILAND_API_MERCHANT_ID'), '未配置 THAILAND_API_MERCHANT_ID 环境变量').toBeDefined();
   });
 
   it('能成功调用 createCollectingOrder 并拿到收银台链接', async () => {

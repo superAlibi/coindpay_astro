@@ -1,5 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
-import { getLocaleFromAcceptLanguage } from './i18n';
+import { getLocaleFromAcceptLanguage } from './i18n/index.ts';
 
 const SUPPORTED_LOCALES = ['en', 'zh', 'th'] as const;
 

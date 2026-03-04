@@ -1,6 +1,6 @@
-import en from './en.json';
-import zh from './zh.json';
-import th from './th.json';
+import en from './en.json' with { type: "json" };
+import zh from './zh.json' with { type: "json" };
+import th from './th.json' with { type: "json" };
 
 const SUPPORTED = ['en', 'zh', 'th'] as const;
 export type Locale = (typeof SUPPORTED)[number];
